@@ -47,7 +47,7 @@ app.use('/Poi', Poi);
 app.use('/RegisteredUsers', RegisteredUsers);
 
 
-var port = 4000;
+var port = 3000;
 app.listen(port, function () {
     console.log('Connecting to server'+port);
 });

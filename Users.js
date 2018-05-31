@@ -268,9 +268,6 @@ function addUserQuestionsAnswers(Username, questions, answers)
 /*$(document).ready(function() {
     $.get('countries.xml', function(d) {
          myMap = new Map();
-        
-        var startTag = "<table border='1' id='mainTable'><tbody><tr><td style=\"width: 120px\">Name</td><td style=\"width: 120px\">Link</td></tr>";
-        var endTag = "</tbody></table>";
         $(d).find('Country').each(function() {
             var $Country = $(this);
             var id = $Country.find('ID').text();
