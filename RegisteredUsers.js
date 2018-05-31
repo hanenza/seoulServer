@@ -143,6 +143,10 @@ else{
     res.send("Invalid Rank or Point ID");
     res.end();
    }
+ else  if (Rank<1 || Rank>5){
+    res.send("Rank needs to be between 1 and 5");
+    res.end();
+   }
 else{
 
     let avg=0;
@@ -224,9 +228,9 @@ router.post('/SavePointOfInterest', function (req, res) {
     var decoded=jwt.decode(token, {complete:true});   
     let Username=decoded.payload.userName;
 
-    let POFid=req.body.POF_id;
+    let POfid=req.body.POF_id;
 
-    if (!POFid){
+    if (!POfid){
         res.send("Invalid Point of Interest");
         res.end();
     }
@@ -234,14 +238,14 @@ router.post('/SavePointOfInterest', function (req, res) {
 
     let lastPosition;
     
-        DButilsAzure.execQuery("SELECT top 1 Position FROM [UsersPointOfInterest] ORDER BY Position DESC")
+        DButilsAzure.execQuery("SELECT top 1 Position FROM [UsersPointOfInterest] WHERE Username='"+Username+"' ORDER BY Position DESC")
         .then(function(result){
            lastPosition=parseInt(result[0].Position);
            lastPosition=lastPosition+1;
            let sql="INSERT INTO [UsersPointOfInterest] VALUES ('"+Username+"'"+",'"+POfid+"',GETDATE(),'"+lastPosition+"')";
            DButilsAzure.execQuery(sql)
            .then(function(result){
-              res.send("Point of Interest save!");
+              res.send("Point of Interest saved!");
               
            })
            .catch(function(err)
@@ -356,8 +360,8 @@ router.post('/SavePointOfInterest', function (req, res) {
 
 
 //get all POF of a specific user in the order he had it  function 8                      
-router.get('/OrderedPointsOfInteret', function (req, res) {
-
+router.get('/OrderedPointsOfInterest', function (req, res) {
+     
     var token = req.headers['token'];
     var decoded=jwt.decode(token, {complete:true});   
     let Username=decoded.payload.userName;
@@ -378,7 +382,7 @@ router.get('/OrderedPointsOfInteret', function (req, res) {
 
 
 
-//get all POF of a specific user  function 1                
+//get all POF of a specific user  function   21              
 router.get('/UserPointsOfInterest', function (req, res) {
 
     var token = req.headers['token'];

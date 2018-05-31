@@ -41,7 +41,6 @@ app.use('/RegisteredUsers', function(req,res,next){
 
 
 
-
 app.use('/Users', Users);
 app.use('/Poi', Poi);
 app.use('/RegisteredUsers', RegisteredUsers);

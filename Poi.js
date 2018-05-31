@@ -26,9 +26,18 @@ router.get('/PointOfInterestInfo/:POF_id', function (req, res) {
     
     let id=req.params.POF_id;
     let POFdata;
-    
+    console.log(id);
+    if (!id){
+        res.send("Invalid point of interest id ");
+        res.end();
+    }
+    else{
     DButilsAzure.execQuery("SELECT NumberOfViewers,Descreption,Ranking FROM [PointsOfInterest] where ID="+id+"")
     .then(function(result){
+        if (result.length==0){
+            res.send("This point of interest doesnt exist in the system!");
+        }
+        else{
         POFdata=result;
         DButilsAzure.execQuery("SELECT TOP 2 ReviewDescription, date FROM [PointOfInterestReview] where POF_id='"+id+"' ORDER BY Date DESC")
         .then(function(result){
@@ -38,16 +47,18 @@ router.get('/PointOfInterestInfo/:POF_id', function (req, res) {
         })
         .catch(function(err)
         {
-            console.log(err)
+            res.send("This point of interest doesnt exist in the system!");
         
         })
+    }
     })
     .catch(function(err)
     {
-        console.log(err)
+        res.send("This point of interest doesnt exist in the system!");
     
     })
-
+    
+    }
 });
 
 
@@ -58,7 +69,12 @@ router.get('/ThreeMostPopular/:minRank', function (req, res) {
     
     let minRank=req.params.minRank
 
-    DButilsAzure.execQuery("SELECT TOP 3 * FROM [PointsOfInterest] WHERE Ranking>='"+minRank+"' ORDER BY NEWID()")
+    if (!minRank){
+        res.send("Invalid rank ");
+        res.end();
+    }
+    else{
+    DButilsAzure.execQuery("SELECT TOP 3 * FROM [PointsOfInterest] WHERE Ranking>='"+minRank+"' ORDER BY NEWID() ")
     .then(function(result){
        
         res.send(result)
@@ -69,7 +85,7 @@ router.get('/ThreeMostPopular/:minRank', function (req, res) {
         console.log(err)
     
     })
-
+    }
 });
 
 
@@ -79,6 +95,13 @@ router.get('/ThreeMostPopular/:minRank', function (req, res) {
     router.get('/SearchByName/:POF_name', function (req, res) {
     
         let name=req.params.POF_name;
+
+        if (!name){
+            res.send("Invalid point of interest name ");
+            res.end();
+        }
+        else{
+
         DButilsAzure.execQuery("SELECT * FROM [PointsOfInterest] where Name='"+name+"'").then(function(result){
             if (result.length>0){
                 res.send(result)
@@ -93,7 +116,7 @@ router.get('/ThreeMostPopular/:minRank', function (req, res) {
             res.sendStatus(404);
         
         })
-    
+    }
     });
     
 
@@ -117,6 +140,14 @@ router.get('/Categories', function (req, res) {
  router.get('/PointOfInterestByCategory/:CategoryID', function (req, res) {
     
     let category=req.params.CategoryID;
+
+    if (!category){
+        res.send("Invalid category ");
+        res.end();
+    }
+
+   else{
+
     DButilsAzure.execQuery("SELECT * FROM [PointsOfInterest] where CatagoryID='"+category+"'").then(function(result){
     if (result.length>0){
      res.send(result);
@@ -131,7 +162,7 @@ router.get('/Categories', function (req, res) {
         console.log(err)
     
     })
-
+   }
 });
 
 
@@ -140,6 +171,7 @@ router.get('/Categories', function (req, res) {
             
         let POFid=req.params.POF_id
     
+        
         if (!POFid){
             res.send("Invalid point of interest");
             res.end();
@@ -153,13 +185,13 @@ router.get('/Categories', function (req, res) {
     
               DButilsAzure.execQuery("UPDATE [PointsOfInterest] SET NumberOFViewers='"+views+"' WHERE ID='"+POFid+"'")
               .then(function(result){
-                  res.send("ok");
+                  res.send("Another viewer has been added to this Point of Interest's viewers!");
                    
               })
             
               .catch(function(err)
               {
-                  res.send("false");
+                  res.send("Couldn't watch the point of view- Invalid point of view");
               
               })
                
