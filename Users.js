@@ -135,14 +135,13 @@ router.post('/Register', function (req, res) {
     let answers=user.Answers;
     var register=true;
     var abc = /^[A-Za-z]+$/;
-    
-    
+    var letters = /((^[0-9]+[a-z]+)|(^[a-z]+[0-9]+))+[0-9a-z]+$/i; 
     if(!user.UserName.match(abc)){
         register=false;
         res.send("Username can cosist only of letters, not numbers");
         res.end();
     }
-    if(!user.Password.match(passwordCheck)){
+    if(!user.Password.match(letters)){
         register=false;
         res.send("Password needs to contain letters AND numbers");
         res.end();
