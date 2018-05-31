@@ -148,11 +148,11 @@ router.post('/Register', function (req, res) {
         res.send("Username's number of letters is between 3 and 8 only");
         res.end();
     }
-  if(!checkCountry(country)){
+ /* if(!checkCountry(country)){
         register=false;
         res.send("Country doesn't exist please give an exist country");
         res.end();
-    }
+    }*/
     if (user.Password.length<5 ||user.Password.length>10){
         register=false;
         res.send("Password's length is between 5 and 10 only");
@@ -265,7 +265,7 @@ function addUserQuestionsAnswers(Username, questions, answers)
     return sql;
 };
 
-$(document).ready(function() {
+/*$(document).ready(function() {
     $.get('countries.xml', function(d) {
          myMap = new Map();
         
@@ -279,8 +279,9 @@ $(document).ready(function() {
         }) ;
     });
 
-});
- function checkCountry(country){
+});*/
+ /*function checkCountry(country){
+     
      for(var i=0;i<myMap.length;i++){
          if(country===myMap.get(i-1)){
              return true;
@@ -288,5 +289,5 @@ $(document).ready(function() {
      }
      return false;
  }
- 
+ */
 module.exports=router;
