@@ -142,7 +142,11 @@ router.post('/Register', function (req, res) {
         res.send("Username can cosist only of letters, not numbers");
         res.end();
     }
-
+    if(!user.Password.match(passwordCheck)){
+        register=false;
+        res.send("Password needs to contain letters AND numbers");
+        res.end();
+     }
     if (user.UserName.length<3 || user.UserName.length>8){
         register=false;
         res.send("Username's number of letters is between 3 and 8 only");
@@ -287,4 +291,5 @@ function addUserQuestionsAnswers(Username, questions, answers)
      return false;
  }
  */
+
 module.exports=router;
