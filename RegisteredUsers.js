@@ -224,15 +224,13 @@ router.post('/SavePointOfInterest', function (req, res) {
     var decoded=jwt.decode(token, {complete:true});   
     let Username=decoded.payload.userName;
 
-    let POfid=req.body.POF_id;
+    let POFid=req.body.POF_id;
 
     if (!POFid){
         res.send("Invalid Point of Interest");
         res.end();
     }
     else{
-
-
 
     let lastPosition;
     
